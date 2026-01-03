@@ -12,9 +12,11 @@ using MongoDB.Driver.Linq;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
+const string ASSETS_PATH = "D:\\PersonalProjects\\TestIt\\backend\\testit\\crawler\\assets";
+
 var repo = new DBRepository("mongodb://localhost:27017", "test-soltion");
 
-await SaveQuestions();
+await SaveAssets();
 Console.WriteLine("Hello, World!");
 
 
@@ -98,12 +100,13 @@ async Task SaveAssets()
 
     string ConvertToFilePath(string url) 
     {
-        if (url.StartsWith('/'))
+        url = url.Replace('/', Path.DirectorySeparatorChar);
+        if (url.StartsWith(Path.DirectorySeparatorChar))
         {
             url = url.Substring(1);
         }
 
-        var filePath = Path.Combine("assets", url);
+        var filePath = Path.Combine(ASSETS_PATH, url);
         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
         return filePath;
     }
